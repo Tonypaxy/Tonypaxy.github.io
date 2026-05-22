@@ -1,65 +1,49 @@
-document.addEventListener("DOMContentLoaded", function() {
-
-const form = document.getElementById("contactForm");
-
-if (!form) {
-  console.error("Form not found!");
-  return;
-}
-
-form.addEventListener("submit", async function(event) {
+window.addEventListener("load", function() {
+  console.log("Page loaded, initializing form...");
   
-  event.preventDefault();
-  console.log("Form submitted!");
+  const form = document.getElementById("contactForm");
+  const button = document.querySelector("button");
   
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("message").value;
+  console.log("Form element:", form);
+  console.log("Button element:", button);
   
-  console.log("Form data:", { name, email, message });
-  
-  if (!name || !email || !message) {
-    alert("Please fill all fields");
-    return;
-  }
-  
-  try {
-    
-    console.log("Sending request to backend...");
-    
-    const response = await fetch(
-      "https://tonypaxy-github-io.onrender.com/contact",
-      {
+  if (form) {
+    form.onsubmit = function(e) {
+      console.log("Form submit event triggered!");
+      e.preventDefault();
+      
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+      
+      console.log("Name:", name);
+      console.log("Email:", email);
+      console.log("Message:", message);
+      
+      if (!name || !email || !message) {
+        alert("Please fill all fields");
+        return;
+      }
+      
+      fetch("https://tonypaxy-github-io.onrender.com/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          name,
-          email,
-          message
-        })
-      }
-    );
-    
-    console.log("Response status:", response.status);
-    
-    const data = await response.json();
-    
-    console.log("Response data:", data);
-    
-    alert(data.message);
-    
-    form.reset();
-    
-  } catch(error) {
-    
-    console.error("Error:", error);
-    
-    alert("Unable to connect to server");
-    
+        body: JSON.stringify({ name, email, message })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Success:", data);
+        alert(data.message);
+        form.reset();
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("Unable to connect to server");
+      });
+    };
+  } else {
+    console.error("Form with ID 'contactForm' not found!");
   }
-  
-});
-
 });
