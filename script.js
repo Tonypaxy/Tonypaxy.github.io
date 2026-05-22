@@ -22,7 +22,7 @@ try{
 
 const response=
 await fetch(
-"https://tonypaxy.github.io",
+"https://tonypaxy-github-io.onrender.com/contact",
 {
 
 method:"POST",
