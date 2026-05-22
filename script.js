@@ -22,7 +22,7 @@ try{
 
 const response=
 await fetch(
-"http://localhost:5000/contact",
+"https://tonypaxy.github.io",
 {
 
 method:"POST",
